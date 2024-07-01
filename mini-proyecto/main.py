@@ -152,7 +152,7 @@ def main(page: ft.Page):
     )
     
     title = ft.Container(
-        content=ft.Text("External Ram",  weight=ft.FontWeight.BOLD, size=20),
+        content=ft.Text("External Ram",  weight=ft.FontWeight.BOLD, size=16),
         border=ft.border.all(1, ft.colors.TRANSPARENT),
         padding=8,
         alignment=ft.alignment.center,
@@ -215,33 +215,76 @@ def main(page: ft.Page):
         alignment=ft.alignment.center,
     )
     
-    # Funciones de las Leds 
+    # Definir una lista de errores por componente
+    errores = {
+        "sram_controller": ["Error en SRAM Controller"],
+        "internal_sram": ["Error en Internal SRAM (16KB)"],
+        "clipper": ["Error en Clipper"],
+        "Input_Data": ["Error en Input Data"],
+        "formatter_in": ["Error en Formatter 64x32 FIFO Clipper"],
+        "decoder": ["Fallo en el Decoder"],
+        "scaler_rotator": ["Error en Scaler|Rotator"],
+        "palette": ["Error en Palette"],
+        "padding": ["Error en Padding"],
+        "CLOCK_IN": ["Error en Clock In"],
+        "pll": ["Error en PLL"],
+        "System_Clock": ["System Clock desconfigurado"],
+        "encoder": ["Error en Encoder"],
+        "formatter_out": ["Error en Formatter 64x32 FIFO"],
+        "Output_Data": ["Error en Output Data"],
+        "Control_Data": ["Error en Control Data"],
+        "command_port_interface": ["Error en Command Port Interface"],
+    }
+    
+    # Funciones de las LEDs y manejo de errores simulados
     led1_state = ft.Ref[ft.Container]()
     led2_state = ft.Ref[ft.Container]()
+    
+    # Crear un contenedor para mostrar mensajes de error
+    error_message_container = ft.Ref[ft.Container]()
+    
+    def show_error_message():
+        # Escoger un componente aleatorio del diccionario de errores
+        componente = random.choice(list(errores.keys()))
+        # Escoger un mensaje de error aleatorio para ese componente
+        error_message = random.choice(errores[componente])
+        error_message_container.current.content = ft.Text(error_message)
+        error_message_container.current.visible = True
+        error_message_container.current.update()
+    
+    def hide_error_message(e):
+        error_message_container.current.visible = False
+        error_message_container.current.update()
     
     def toggle_leds(e):
         random_number1 = random.randint(1, 10)
         random_number2 = random.randint(11, 20)
-        if random_number1 % 2 == 0:
-            led1_state.current.content = ft.Image(
-                src='../assets/LED_ON.jpg',
-                scale=ft.Scale('1')
-            )
-        else:
+        
+        # Verificar si el número generado es impar y mostrar mensaje de error
+        if random_number1 % 2 != 0:
             led1_state.current.content = ft.Image(
                 src='../assets/LED_OFF.png',
                 scale=ft.Scale('1')
             )
-        if random_number2 % 2 == 0:
-            led2_state.current.content = ft.Image(
+            show_error_message()
+        else:
+            led1_state.current.content = ft.Image(
                 src='../assets/LED_ON.jpg',
                 scale=ft.Scale('1')
             )
-        else:
+        
+        if random_number2 % 2 != 0:
             led2_state.current.content = ft.Image(
                 src='../assets/LED_OFF.png',
                 scale=ft.Scale('1')
             )
+            show_error_message()
+        else:
+            led2_state.current.content = ft.Image(
+                src='../assets/LED_ON.jpg',
+                scale=ft.Scale('1')
+            )
+        
         led1_state.current.update()
         led2_state.current.update()
     
@@ -256,7 +299,8 @@ def main(page: ft.Page):
         )
         led1_state.current.update()
         led2_state.current.update()
-    
+        hide_error_message(e)
+        
     # Botones para el funcionamiento del simulador del sistema experto
     Simular = ft.Container(
         content=ft.TextButton(text="Simular", on_click=toggle_leds),
@@ -272,9 +316,20 @@ def main(page: ft.Page):
         alignment=ft.alignment.center,
     )
     
+    # Crear contenedor para el mensaje de error
+    error_container = ft.Container(
+        ref=error_message_container,
+        content=ft.Text(""),
+        bgcolor=ft.colors.RED_200,
+        padding=8,
+        visible=False,
+        alignment=ft.alignment.center,
+    )
+    
     # Añadir componentes al layout
     page.add(
         ft.Column([
+            ft.Column([error_container]),
             ft.Row([
                 ft.Container(width=500),
                 title,
@@ -350,6 +405,7 @@ def main(page: ft.Page):
                 ft.Icon(name=ft.icons.SUBDIRECTORY_ARROW_RIGHT, color=ft.colors.WHITE, size=30),
                 ft.Container(width=110),
                 ft.Icon(name=ft.icons.ARROW_OUTWARD, color=ft.colors.WHITE, size=30),
+                ft.Container(width=200),
             ]), 
             ft.Row([
                 Control_Data,
