@@ -1,5 +1,5 @@
 import flet as ft
-import random 
+import random
 
 def main(page: ft.Page):
     page.title = "WorkCentre Pro 412 Simulation"
@@ -215,19 +215,63 @@ def main(page: ft.Page):
         alignment=ft.alignment.center,
     )
     
+    # Funciones de las Leds 
+    led1_state = ft.Ref[ft.Container]()
+    led2_state = ft.Ref[ft.Container]()
+    
+    def toggle_leds(e):
+        random_number1 = random.randint(1, 10)
+        random_number2 = random.randint(11, 20)
+        if random_number1 % 2 == 0:
+            led1_state.current.content = ft.Image(
+                src='../assets/LED_ON.jpg',
+                scale=ft.Scale('1')
+            )
+        else:
+            led1_state.current.content = ft.Image(
+                src='../assets/LED_OFF.png',
+                scale=ft.Scale('1')
+            )
+        if random_number2 % 2 == 0:
+            led2_state.current.content = ft.Image(
+                src='../assets/LED_ON.jpg',
+                scale=ft.Scale('1')
+            )
+        else:
+            led2_state.current.content = ft.Image(
+                src='../assets/LED_OFF.png',
+                scale=ft.Scale('1')
+            )
+        led1_state.current.update()
+        led2_state.current.update()
+    
+    def reset_leds(e):
+        led1_state.current.content = ft.Image(
+            src='../assets/LED.jpg',
+            scale=ft.Scale('1')
+        )
+        led2_state.current.content = ft.Image(
+            src='../assets/LED.jpg',
+            scale=ft.Scale('1')
+        )
+        led1_state.current.update()
+        led2_state.current.update()
+    
+    # Botones para el funcionamiento del simulador del sistema experto
     Simular = ft.Container(
-        content=ft.TextButton(text="Simular"),
+        content=ft.TextButton(text="Simular", on_click=toggle_leds),
         border=ft.border.all(1, ft.colors.BLACK),
         padding=16,
         alignment=ft.alignment.center,
     )
     
     Reiniciar = ft.Container(
-        content=ft.TextButton(text="Reiniciar"),
+        content=ft.TextButton(text="Reiniciar", on_click=reset_leds),
         border=ft.border.all(1, ft.colors.BLACK),
         padding=16,
         alignment=ft.alignment.center,
-    )    
+    )
+    
     # Añadir componentes al layout
     page.add(
         ft.Column([
@@ -266,7 +310,7 @@ def main(page: ft.Page):
             ft.Row([
                 Input_Data,
                 formatter_in,
-                led_on,
+                ft.Container(ref=led1_state, bgcolor=ft.colors.BLACK, height=60, width=60),
                 ft.Icon(name=ft.icons.ADD , color=ft.colors.WHITE, size=30),
                 decoder,
                 ft.Icon(name=ft.icons.ADD , color=ft.colors.WHITE, size=30),
@@ -294,7 +338,7 @@ def main(page: ft.Page):
                 encoder,
                 arrow_container,
                 empty_container,
-                led_on,
+                ft.Container(ref=led2_state, bgcolor=ft.colors.BLACK, height=60, width=60),
                 arrow_container2,
                 empty_container2,
                 ft.Icon(name=ft.icons.ARROW_FORWARD, color=ft.colors.WHITE, size=30),
@@ -318,11 +362,7 @@ def main(page: ft.Page):
                 Simular,
                 Reiniciar
             ]),
-            
-            
         ])
     )
-    
 
 ft.app(target=main)
-
