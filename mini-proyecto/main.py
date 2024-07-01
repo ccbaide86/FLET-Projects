@@ -1,7 +1,8 @@
 import flet as ft
+import random 
 
 def main(page: ft.Page):
-    page.title = "Diagrama de bloques"
+    page.title = "WorkCentre Pro 412 Simulation"
     
     # Crear los componentes de UI
     pll = ft.Container(
@@ -105,6 +106,30 @@ def main(page: ft.Page):
         content=ft.Text(""),
         border=ft.border.all(1, ft.colors.BLACK),
         padding=8,
+        height=150,
+        width=35,
+        alignment=ft.alignment.center,
+    )
+    
+    arrow_container = ft.Container(
+        content=ft.Column([
+            ft.Icon(name=ft.icons.SUBDIRECTORY_ARROW_RIGHT , color=ft.colors.WHITE, size=30), 
+            ft.Icon(name=ft.icons.ARROW_FORWARD , color=ft.colors.WHITE, size=30), 
+            ]),
+        border=ft.border.all(1, ft.colors.TRANSPARENT),
+        padding=8,
+        height=120,
+        width=35,
+        alignment=ft.alignment.center,
+    )
+    
+    arrow_container2 = ft.Container(
+        content=ft.Column([
+            ft.Icon(name=ft.icons.SUBDIRECTORY_ARROW_RIGHT , color=ft.colors.WHITE, size=30), 
+            ft.Icon(name=ft.icons.ARROW_FORWARD , color=ft.colors.WHITE, size=30), 
+            ]),
+        border=ft.border.all(1, ft.colors.TRANSPARENT),
+        padding=8,
         height=120,
         width=35,
         alignment=ft.alignment.center,
@@ -114,48 +139,187 @@ def main(page: ft.Page):
         content=ft.Text(""),
         border=ft.border.all(1, ft.colors.BLACK),
         padding=8,
-        height=70,
+        height=75,
         width=35,
         alignment=ft.alignment.center,
     )
     
+    compare = ft.Container(
+        content=ft.Row([ft.Text("Address"), ft.Icon(name=ft.icons.COMPARE_ARROWS , color=ft.colors.WHITE, size=30), ft.Text('Data')]),
+        border=ft.border.all(1, ft.colors.TRANSPARENT),
+        padding=8,
+        alignment=ft.alignment.center,
+    )
+    
+    title = ft.Container(
+        content=ft.Text("External Ram",  weight=ft.FontWeight.BOLD, size=20),
+        border=ft.border.all(1, ft.colors.TRANSPARENT),
+        padding=8,
+        alignment=ft.alignment.center,
+    )
+    
+    subtitle = ft.Container(
+        content=ft.Row([ft.Text("Address"), 
+                        ft.Icon(name=ft.icons.ARROW_UPWARD , color=ft.colors.WHITE, size=30), 
+                        ft.Container(width=100),
+                        ft.Icon(name=ft.icons.ARROW_DOWNWARD , color=ft.colors.WHITE, size=30),
+                        ft.Text('Data')
+                        ]),
+        border=ft.border.all(1, ft.colors.TRANSPARENT),
+        padding=8,
+        alignment=ft.alignment.center,
+    )
+    
+    Input_Data =  ft.Container(
+        content=ft.Column([ft.Text("Input Data",  weight=ft.FontWeight.BOLD, size=15),
+                        ft.Icon(name=ft.icons.ARROW_FORWARD , color=ft.colors.WHITE, size=30,)
+                        ]),
+        border=ft.border.all(1, ft.colors.TRANSPARENT),
+        padding=8,
+        alignment=ft.alignment.center,
+    )
+    
+    CLOCK_IN =  ft.Container(
+        content=ft.Column([ft.Text("Clock In",  weight=ft.FontWeight.BOLD, size=10),
+                        ft.Icon(name=ft.icons.DOUBLE_ARROW , color=ft.colors.WHITE, size=20,)
+                        ]),
+        border=ft.border.all(1, ft.colors.TRANSPARENT),
+        padding=8,
+        alignment=ft.alignment.center,
+    )
+    
+    System_Clock =  ft.Container(
+        content=ft.Column([ft.Text("System Clock",  weight=ft.FontWeight.BOLD, size=10),
+                        ft.Icon(name=ft.icons.DOUBLE_ARROW , color=ft.colors.WHITE, size=20,)
+                        ]),
+        border=ft.border.all(1, ft.colors.TRANSPARENT),
+        padding=8,
+        alignment=ft.alignment.center,
+    )
+    
+    Control_Data =  ft.Container(
+        content=ft.Column([ft.Text("Control Data",  weight=ft.FontWeight.BOLD, size=15),
+                        ft.Icon(name=ft.icons.ARROW_FORWARD , color=ft.colors.WHITE, size=30,)
+                        ]),
+        border=ft.border.all(1, ft.colors.TRANSPARENT),
+        padding=8,
+        alignment=ft.alignment.center,
+    )
+    
+    Output_Data =  ft.Container(
+        content=ft.Column([ft.Text("Output Data",  weight=ft.FontWeight.BOLD, size=15),
+                        ft.Icon(name=ft.icons.ARROW_FORWARD , color=ft.colors.WHITE, size=30,)
+                        ]),
+        border=ft.border.all(1, ft.colors.TRANSPARENT),
+        padding=8,
+        alignment=ft.alignment.center,
+    )
+    
+    Simular = ft.Container(
+        content=ft.TextButton(text="Simular"),
+        border=ft.border.all(1, ft.colors.BLACK),
+        padding=16,
+        alignment=ft.alignment.center,
+    )
+    
+    Reiniciar = ft.Container(
+        content=ft.TextButton(text="Reiniciar"),
+        border=ft.border.all(1, ft.colors.BLACK),
+        padding=16,
+        alignment=ft.alignment.center,
+    )    
     # Añadir componentes al layout
     page.add(
         ft.Column([
             ft.Row([
+                ft.Container(width=500),
+                title,
+            ]),
+            ft.Row([
+                ft.Container(width=410),
+                subtitle,
+            ]),
+            ft.Row([
                 ft.Container(width=200),
-                sram_controller, 
-                ft.Container(width=75),
+                sram_controller,
+                compare,
                 internal_sram,
             ]),
             ft.Row([
-                ft.Container(width=800),
+                ft.Container(width=410),
+                ft.Icon(name=ft.icons.ARROW_UPWARD , color=ft.colors.WHITE, size=30),
+                ft.Container(width=75),
+                ft.Icon(name=ft.icons.ARROW_UPWARD , color=ft.colors.WHITE, size=30),
+                ft.Container(width=10),
+                ft.Icon(name=ft.icons.ARROW_DOWNWARD , color=ft.colors.WHITE, size=30),
+                ft.Container(width=90),
+                ft.Icon(name=ft.icons.ARROW_DOWNWARD , color=ft.colors.WHITE, size=30),
+            ]),
+            ft.Row([
+                ft.Container(width=720),
                 clipper,
             ]),
             ft.Row([
+                ft.Container(width=740),
+                ft.Icon(name=ft.icons.ARROW_DOWNWARD , color=ft.colors.WHITE, size=30),
+            ]),
+            ft.Row([
+                Input_Data,
                 formatter_in,
                 led_on,
-                ft.Container(width=100),
+                ft.Icon(name=ft.icons.ADD , color=ft.colors.WHITE, size=30),
                 decoder,
-                ft.Container(width=290),
+                ft.Icon(name=ft.icons.ADD , color=ft.colors.WHITE, size=30),
+                ft.Container(width=135),
                 scaler_rotator,
+                ft.Icon(name=ft.icons.ARROW_FORWARD , color=ft.colors.WHITE, size=30),
                 palette,
             ]),
             ft.Row([
-                ft.Container(width=920),
+                ft.Container(width=740),
+                ft.Icon(name=ft.icons.ARROW_DOWNWARD , color=ft.colors.WHITE, size=30),
+                ft.Container(width=100),
+                ft.Icon(name=ft.icons.ARROW_DOWNWARD , color=ft.colors.WHITE, size=30),
+            ]),
+            ft.Row([
+                ft.Container(width=875),
                 padding,
             ]), 
             ft.Row([
+                CLOCK_IN,
                 pll,
-                ft.Container(width=450),
+                System_Clock,
+                ft.Container(width=405),
+                ft.Icon(name=ft.icons.SUBDIRECTORY_ARROW_RIGHT, color=ft.colors.WHITE, size=30),
                 encoder,
+                arrow_container,
                 empty_container,
                 led_on,
-                ft.Container(width=300),
+                arrow_container2,
                 empty_container2,
-                formatter_out
+                ft.Icon(name=ft.icons.ARROW_FORWARD, color=ft.colors.WHITE, size=30),
+                formatter_out,
+                Output_Data
             ]),
-            command_port_interface,
+            ft.Row([
+                ft.Container(width=560),
+                ft.Icon(name=ft.icons.SUBDIRECTORY_ARROW_RIGHT, color=ft.colors.WHITE, size=30),
+                ft.Container(width=110),
+                ft.Icon(name=ft.icons.ARROW_OUTWARD, color=ft.colors.WHITE, size=30),
+            ]), 
+            ft.Row([
+                Control_Data,
+                command_port_interface,
+                ft.Container(width=90),
+                ft.Icon(name=ft.icons.SUBDIRECTORY_ARROW_RIGHT, color=ft.colors.WHITE, size=30),
+                ft.Container(width=265),
+                ft.Icon(name=ft.icons.ARROW_OUTWARD, color=ft.colors.WHITE, size=30),
+                ft.Container(width=450),
+                Simular,
+                Reiniciar
+            ]),
+            
+            
         ])
     )
     
