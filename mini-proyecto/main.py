@@ -257,8 +257,8 @@ def main(page: ft.Page):
         error_message_container.current.update()
     
     def toggle_leds(e):
-        random_number1 = random.randint(1, 10)
-        random_number2 = random.randint(11, 20)
+        random_number1 = random.randint(1, 10) 
+        random_number2 = random.randint(11, 20) 
         
         # Verificar si el número generado es impar y mostrar mensaje de error
         if random_number1 % 2 != 0:
