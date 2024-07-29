@@ -219,6 +219,7 @@ def main(page: ft.Page):
     )
     
     # Definir una lista de errores por componente
+    '''
     errores = {
         "sram_controller": ["Error en SRAM Controller, Diagnostico: Reiniciar Dispositivo"],
         "internal_sram": ["Error en Internal SRAM (16KB), Diagnostico: Reiniciar Dispositivo"],
@@ -237,6 +238,26 @@ def main(page: ft.Page):
         "Output_Data": ["Error en Output Data, Diagnostico: Revisar la Conexion"],
         "Control_Data": ["Error en Control Data, Diagnostico: Reiniciar el Dispositivo"],
         "command_port_interface": ["Error en Command Port Interface, Diagnostico: Revisar la Conexion"],
+    }
+    '''
+    errores = {
+        "sram_controller": ["Error en SRAM Controller"],
+        "internal_sram": ["Error en Internal SRAM (16KB)"],
+        "clipper": ["Error en Clipper"],
+        "Input_Data": ["Error en Input Data"],
+        "formatter_in": ["Error en Formatter 64x32 FIFO Clipper"],
+        "decoder": ["Fallo en el Decoder"],
+        "scaler_rotator": ["Error en Scaler|Rotator"],
+        "palette": ["Error en Palette"],
+        "padding": ["Error en Padding"],
+        "CLOCK_IN": ["Error en Clock In"],
+        "pll": ["Error en PLL"],
+        "System_Clock": ["System Clock desconfigurado"],
+        "encoder": ["Error en Encoder"],
+        "formatter_out": ["Error en Formatter 64x32 FIFO"],
+        "Output_Data": ["Error en Output Data"],
+        "Control_Data": ["Error en Control Data"],
+        "command_port_interface": ["Error en Command Port Interface"],
     }
     
     # Funciones de las LEDs y manejo de errores simulados
