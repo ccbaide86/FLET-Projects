@@ -1,9 +1,11 @@
 import flet as ft
 import random
+import paho.mqtt.client as mqtt
 
 def main(page: ft.Page):
     page.title = "WorkCentre Pro 412 Simulation"
-    
+    page.theme_mode = ft.ThemeMode.DARK  
+
     # Crear los componentes de UI
     pll = ft.Container(
         content=ft.Text("PLL"),
@@ -88,7 +90,8 @@ def main(page: ft.Page):
         width=60,
         content=ft.Image(
             src='../assets/LED_ON.jpg',
-            scale=ft.Scale('1')
+            scale=ft.Scale('1'),
+            color=ft.colors.BLACK
         )
     )
     
@@ -251,39 +254,75 @@ def main(page: ft.Page):
         error_message_container.current.content = ft.Text(error_message)
         error_message_container.current.visible = True
         error_message_container.current.update()
+
+        broker = "test.mosquitto.org"
+        port = 1883
+        topic = "academics/IoT2"
+
+        # Crear una nueva instancia del cliente MQTT
+        client = mqtt.Client()
+
+        # Conectar al broker
+        client.connect(broker, port)
+
+        # Publicar un mensaje para encender el LED
+        response = client.publish(topic, error_message)
+
+        # Desconectar del brokers
+        client.disconnect()
     
     def hide_error_message(e):
         error_message_container.current.visible = False
         error_message_container.current.update()
     
     def toggle_leds(e):
-        random_number1 = random.randint(1, 10) 
-        random_number2 = random.randint(11, 20) 
+        random_number1 = random.randint(0, 1)
+        random_number2 = random.randint(0, 1)
+        led_indicator = random_number1 + random_number2
         
-        # Verificar si el número generado es impar y mostrar mensaje de error
-        if random_number1 % 2 != 0:
+        broker = "test.mosquitto.org"
+        port = 1883
+        topic = "academics/IoT"
+
+        # Crear una nueva instancia del cliente MQTT
+        client = mqtt.Client()
+
+        # Conectar al broker
+        client.connect(broker, port)
+
+        # Publicar un mensaje para encender el LED
+        client.publish(topic, led_indicator)
+        if (led_indicator == 2): 
+            client.publish("academics/IoT2", "Funciona Correctamente")
+
+        # Desconectar del brokers
+        client.disconnect()
+
+        # Si es 0 se enciende ROJO, si es 1 se enciende VERDE
+        if random_number1 == 0:
             led1_state.current.content = ft.Image(
                 src='../assets/LED_OFF.png',
                 scale=ft.Scale('1')
             )
-            show_error_message()
         else:
             led1_state.current.content = ft.Image(
                 src='../assets/LED_ON.jpg',
                 scale=ft.Scale('1')
             )
         
-        if random_number2 % 2 != 0:
+        if random_number2 == 0:
             led2_state.current.content = ft.Image(
                 src='../assets/LED_OFF.png',
                 scale=ft.Scale('1')
             )
-            show_error_message()
         else:
             led2_state.current.content = ft.Image(
                 src='../assets/LED_ON.jpg',
                 scale=ft.Scale('1')
             )
+
+        if led_indicator != 2:
+            show_error_message()
         
         led1_state.current.update()
         led2_state.current.update()
